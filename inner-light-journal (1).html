@@ -1,0 +1,1392 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Inner Light Journal</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --ink:      #1a1714;
+    --warm:     #f5f0e8;
+    --paper:    #faf7f2;
+    --mid:      #7a7268;
+    --rule:     #ddd8cf;
+    --accent:   #3d5a4c;
+    --accent-l: #e8f0ec;
+    --gold:     #b8986a;
+    --serif:    'Cormorant Garamond', Georgia, serif;
+    --sans:     'DM Sans', system-ui, sans-serif;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--paper);
+    color: var(--ink);
+    font-family: var(--sans);
+    font-size: 15px;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ── ANNOUNCEMENT BAR ────────────────────────────────── */
+  .announce {
+    background: var(--accent);
+    color: #d4e8dc;
+    text-align: center;
+    font-size: 12px;
+    letter-spacing: .08em;
+    padding: 9px 20px;
+    font-family: var(--sans);
+  }
+  .announce a { color: #fff; text-decoration: underline; text-underline-offset: 3px; }
+
+  /* ── NAV ─────────────────────────────────────────────── */
+  nav {
+    background: var(--paper);
+    border-bottom: 1px solid var(--rule);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+
+  .nav-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 32px;
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    align-items: center;
+    height: 64px;
+  }
+
+  .nav-left, .nav-right {
+    display: flex;
+    gap: 28px;
+    align-items: center;
+  }
+  .nav-right { justify-content: flex-end; }
+
+  .nav-logo {
+    text-align: center;
+    line-height: 1;
+  }
+  .nav-logo .wordmark {
+    font-family: var(--serif);
+    font-size: 22px;
+    font-weight: 300;
+    letter-spacing: .04em;
+    color: var(--ink);
+    text-decoration: none;
+    display: block;
+  }
+  .nav-logo .tagline {
+    font-size: 9px;
+    letter-spacing: .18em;
+    text-transform: uppercase;
+    color: var(--mid);
+    margin-top: 2px;
+  }
+
+  nav a {
+    text-decoration: none;
+    color: var(--mid);
+    font-size: 12.5px;
+    letter-spacing: .04em;
+    transition: color .2s;
+    white-space: nowrap;
+  }
+  nav a:hover { color: var(--ink); }
+
+  .nav-dropdown {
+    position: relative;
+  }
+  .nav-dropdown > a::after {
+    content: ' ↓';
+    font-size: 10px;
+    opacity: .6;
+  }
+  .dropdown-menu {
+    display: none;
+    position: absolute;
+    top: calc(100% + 8px);
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--paper);
+    border: 1px solid var(--rule);
+    border-radius: 6px;
+    padding: 10px 0;
+    min-width: 180px;
+    box-shadow: 0 8px 24px rgba(0,0,0,.08);
+    z-index: 200;
+  }
+  .nav-dropdown:hover .dropdown-menu { display: block; }
+  .dropdown-menu a {
+    display: block;
+    padding: 8px 20px;
+    font-size: 12.5px;
+  }
+  .dropdown-menu a:hover { background: var(--warm); color: var(--ink); }
+
+  .btn-subscribe {
+    background: var(--accent);
+    color: #fff !important;
+    padding: 7px 18px;
+    border-radius: 3px;
+    font-size: 11.5px !important;
+    letter-spacing: .06em;
+    transition: background .2s !important;
+  }
+  .btn-subscribe:hover { background: #2e4438 !important; }
+
+  /* ── HERO (FEATURED) ─────────────────────────────────── */
+  .hero {
+    border-bottom: 1px solid var(--rule);
+    overflow: hidden;
+  }
+
+  .hero-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 32px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    min-height: 500px;
+  }
+
+  .hero-text {
+    padding: 64px 56px 64px 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    border-right: 1px solid var(--rule);
+  }
+
+  .hero-eyebrow {
+    font-size: 10.5px;
+    letter-spacing: .16em;
+    text-transform: uppercase;
+    color: var(--accent);
+    font-weight: 500;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .hero-eyebrow::before {
+    content: '';
+    display: inline-block;
+    width: 28px;
+    height: 1px;
+    background: var(--accent);
+  }
+
+  .hero-title {
+    font-family: var(--serif);
+    font-size: clamp(36px, 4vw, 54px);
+    font-weight: 300;
+    line-height: 1.15;
+    letter-spacing: -.01em;
+    color: var(--ink);
+    margin-bottom: 20px;
+  }
+
+  .hero-excerpt {
+    font-size: 15px;
+    color: var(--mid);
+    line-height: 1.75;
+    margin-bottom: 32px;
+    max-width: 440px;
+  }
+
+  .hero-meta {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    font-size: 12px;
+    color: var(--mid);
+  }
+  .hero-meta .author { color: var(--ink); font-weight: 500; }
+  .hero-meta .dot { opacity: .4; }
+
+  .hero-read {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 12.5px;
+    color: var(--accent);
+    letter-spacing: .06em;
+    text-decoration: none;
+    margin-top: 28px;
+    font-weight: 500;
+    transition: gap .2s;
+  }
+  .hero-read:hover { gap: 14px; }
+  .hero-read::after { content: '→'; }
+
+  .hero-image {
+    position: relative;
+    overflow: hidden;
+    background: var(--warm);
+  }
+  .hero-image-inner {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, #e8e0d0 0%, #d4c9b4 50%, #c8bea8 100%);
+    position: relative;
+  }
+  /* Decorative abstract — no external image needed */
+  .hero-image-inner::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 60% 80% at 70% 40%, rgba(61,90,76,.12) 0%, transparent 70%),
+      radial-gradient(ellipse 40% 60% at 30% 70%, rgba(184,152,106,.15) 0%, transparent 60%);
+  }
+  .hero-quote {
+    font-family: var(--serif);
+    font-size: 28px;
+    font-weight: 300;
+    font-style: italic;
+    color: rgba(26,23,20,.55);
+    text-align: center;
+    padding: 48px;
+    line-height: 1.5;
+    position: relative;
+    z-index: 1;
+  }
+  .hero-quote::before {
+    content: '\201C';
+    display: block;
+    font-size: 80px;
+    line-height: .7;
+    color: rgba(184,152,106,.4);
+    margin-bottom: 8px;
+  }
+
+  /* ── SECTION LABEL ───────────────────────────────────── */
+  .section-label {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 48px 32px 20px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+  .section-label span {
+    font-size: 10px;
+    letter-spacing: .2em;
+    text-transform: uppercase;
+    color: var(--mid);
+    font-weight: 500;
+  }
+  .section-label::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--rule);
+  }
+
+  /* ── ARTICLE LIST ────────────────────────────────────── */
+  .feed {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 32px 80px;
+  }
+
+  .article-row {
+    display: grid;
+    grid-template-columns: 80px 1fr auto;
+    align-items: start;
+    gap: 0 28px;
+    padding: 28px 0;
+    border-bottom: 1px solid var(--rule);
+    text-decoration: none;
+    color: inherit;
+    transition: background .15s;
+  }
+  .article-row:hover .art-title { color: var(--accent); }
+
+  .art-num {
+    font-family: var(--serif);
+    font-size: 36px;
+    font-weight: 300;
+    color: var(--rule);
+    line-height: 1;
+    padding-top: 4px;
+    text-align: right;
+  }
+
+  .art-body {}
+
+  .art-tag {
+    font-size: 10px;
+    letter-spacing: .14em;
+    text-transform: uppercase;
+    color: var(--accent);
+    font-weight: 500;
+    margin-bottom: 8px;
+  }
+
+  .art-title {
+    font-family: var(--serif);
+    font-size: 22px;
+    font-weight: 400;
+    line-height: 1.3;
+    color: var(--ink);
+    margin-bottom: 8px;
+    transition: color .2s;
+  }
+
+  .art-excerpt {
+    font-size: 13.5px;
+    color: var(--mid);
+    line-height: 1.65;
+    max-width: 560px;
+  }
+
+  .art-meta {
+    font-size: 11.5px;
+    color: var(--mid);
+    text-align: right;
+    white-space: nowrap;
+    padding-top: 6px;
+    line-height: 1.8;
+  }
+  .art-meta .art-author { color: var(--ink); font-weight: 500; }
+
+  /* ── SIDEBAR / TWO-COL ───────────────────────────────── */
+  .two-col {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 32px 80px;
+    display: grid;
+    grid-template-columns: 1fr 320px;
+    gap: 56px;
+    align-items: start;
+  }
+
+  /* ── TOPICS STRIP ────────────────────────────────────── */
+  .topics-strip {
+    border-top: 1px solid var(--rule);
+    border-bottom: 1px solid var(--rule);
+    background: var(--warm);
+  }
+  .topics-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 32px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+  .topics-label {
+    font-size: 10px;
+    letter-spacing: .16em;
+    text-transform: uppercase;
+    color: var(--mid);
+    font-weight: 500;
+    margin-right: 8px;
+    white-space: nowrap;
+  }
+  .topic-chip {
+    display: inline-block;
+    padding: 6px 16px;
+    border: 1px solid var(--rule);
+    border-radius: 100px;
+    font-size: 12.5px;
+    color: var(--mid);
+    text-decoration: none;
+    background: var(--paper);
+    transition: all .2s;
+    white-space: nowrap;
+  }
+  .topic-chip:hover {
+    background: var(--accent);
+    color: #fff;
+    border-color: var(--accent);
+  }
+
+  /* ── PREM RAWAT SECTION ──────────────────────────────── */
+  .from-prem {
+    background: var(--ink);
+    color: var(--warm);
+  }
+  .from-prem-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 72px 32px;
+    display: grid;
+    grid-template-columns: 280px 1fr;
+    gap: 64px;
+    align-items: center;
+  }
+  .prem-label {
+    font-size: 9.5px;
+    letter-spacing: .2em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 20px;
+    font-weight: 500;
+  }
+  .prem-name {
+    font-family: var(--serif);
+    font-size: 36px;
+    font-weight: 300;
+    color: var(--warm);
+    line-height: 1.2;
+    margin-bottom: 16px;
+  }
+  .prem-bio {
+    font-size: 13.5px;
+    color: #a09890;
+    line-height: 1.75;
+  }
+  .prem-portrait {
+    width: 160px;
+    height: 160px;
+    border-radius: 50%;
+    background: linear-gradient(145deg, #3d5a4c, #2a3f35);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--serif);
+    font-size: 52px;
+    color: rgba(245,240,232,.25);
+    margin-bottom: 24px;
+    border: 1px solid rgba(255,255,255,.08);
+  }
+  .prem-articles { margin-top: 32px; }
+  .prem-article-item {
+    border-top: 1px solid rgba(255,255,255,.08);
+    padding: 20px 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: start;
+    gap: 20px;
+  }
+  .prem-article-item:last-child { border-bottom: 1px solid rgba(255,255,255,.08); }
+  .prem-art-title {
+    font-family: var(--serif);
+    font-size: 19px;
+    font-weight: 300;
+    color: var(--warm);
+    line-height: 1.35;
+    flex: 1;
+  }
+  .prem-art-tag {
+    font-size: 10px;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    color: var(--gold);
+    white-space: nowrap;
+    padding-top: 3px;
+  }
+
+  /* ── NEWSLETTER ──────────────────────────────────────── */
+  .newsletter {
+    background: var(--accent-l);
+    border-top: 1px solid #c8dcd0;
+    border-bottom: 1px solid #c8dcd0;
+  }
+  .newsletter-inner {
+    max-width: 640px;
+    margin: 0 auto;
+    padding: 72px 32px;
+    text-align: center;
+  }
+  .nl-eyebrow {
+    font-size: 10px;
+    letter-spacing: .2em;
+    text-transform: uppercase;
+    color: var(--accent);
+    font-weight: 500;
+    margin-bottom: 16px;
+  }
+  .nl-title {
+    font-family: var(--serif);
+    font-size: 38px;
+    font-weight: 300;
+    color: var(--ink);
+    line-height: 1.25;
+    margin-bottom: 12px;
+  }
+  .nl-sub {
+    font-size: 14px;
+    color: var(--mid);
+    margin-bottom: 36px;
+    line-height: 1.7;
+  }
+  .nl-form {
+    display: flex;
+    gap: 0;
+    max-width: 440px;
+    margin: 0 auto;
+    border: 1px solid #b0c8b8;
+    border-radius: 4px;
+    overflow: hidden;
+    background: white;
+  }
+  .nl-form input {
+    flex: 1;
+    padding: 13px 18px;
+    border: none;
+    outline: none;
+    font-family: var(--sans);
+    font-size: 14px;
+    color: var(--ink);
+    background: transparent;
+  }
+  .nl-form input::placeholder { color: #aaa; }
+  .nl-form button {
+    padding: 13px 22px;
+    background: var(--accent);
+    color: #fff;
+    border: none;
+    font-family: var(--sans);
+    font-size: 12.5px;
+    font-weight: 500;
+    letter-spacing: .05em;
+    cursor: pointer;
+    transition: background .2s;
+    white-space: nowrap;
+  }
+  .nl-form button:hover { background: #2e4438; }
+  .nl-note {
+    font-size: 11px;
+    color: var(--mid);
+    margin-top: 12px;
+    opacity: .7;
+  }
+
+  /* ── SIDEBAR WIDGET ──────────────────────────────────── */
+  .sidebar-widget {
+    border-top: 2px solid var(--ink);
+    padding-top: 20px;
+    margin-bottom: 40px;
+  }
+  .widget-title {
+    font-size: 10px;
+    letter-spacing: .18em;
+    text-transform: uppercase;
+    color: var(--mid);
+    font-weight: 500;
+    margin-bottom: 20px;
+  }
+  .widget-quote {
+    font-family: var(--serif);
+    font-size: 20px;
+    font-weight: 300;
+    font-style: italic;
+    color: var(--ink);
+    line-height: 1.55;
+    margin-bottom: 12px;
+  }
+  .widget-attr {
+    font-size: 12px;
+    color: var(--mid);
+  }
+  .widget-list a {
+    display: flex;
+    gap: 12px;
+    padding: 12px 0;
+    border-bottom: 1px solid var(--rule);
+    text-decoration: none;
+    color: inherit;
+  }
+  .widget-list a:first-child { border-top: 1px solid var(--rule); }
+  .wl-num {
+    font-family: var(--serif);
+    font-size: 18px;
+    color: var(--rule);
+    min-width: 24px;
+  }
+  .wl-title {
+    font-size: 13.5px;
+    color: var(--ink);
+    line-height: 1.4;
+    transition: color .2s;
+  }
+  .widget-list a:hover .wl-title { color: var(--accent); }
+
+  /* ── FOOTER ──────────────────────────────────────────── */
+  footer {
+    background: var(--ink);
+    color: rgba(245,240,232,.5);
+    padding: 56px 32px 32px;
+  }
+  .footer-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 240px 1fr 1fr 1fr;
+    gap: 48px;
+    margin-bottom: 48px;
+  }
+  .footer-brand .wordmark {
+    font-family: var(--serif);
+    font-size: 22px;
+    font-weight: 300;
+    color: var(--warm);
+    display: block;
+    margin-bottom: 12px;
+  }
+  .footer-brand p {
+    font-size: 12.5px;
+    line-height: 1.7;
+  }
+  .footer-col h4 {
+    font-size: 10px;
+    letter-spacing: .16em;
+    text-transform: uppercase;
+    color: rgba(245,240,232,.35);
+    margin-bottom: 16px;
+    font-weight: 500;
+  }
+  .footer-col a {
+    display: block;
+    font-size: 13px;
+    color: rgba(245,240,232,.5);
+    text-decoration: none;
+    margin-bottom: 9px;
+    transition: color .2s;
+  }
+  .footer-col a:hover { color: var(--warm); }
+  .footer-bottom {
+    max-width: 1200px;
+    margin: 0 auto;
+    border-top: 1px solid rgba(255,255,255,.07);
+    padding-top: 24px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 11.5px;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+  .footer-bottom a { color: inherit; text-decoration: none; }
+  .footer-bottom a:hover { color: var(--warm); }
+
+  /* ── FADE-IN ANIMATION ───────────────────────────────── */
+  .fade-up {
+    opacity: 0;
+    transform: translateY(18px);
+    transition: opacity .6s ease, transform .6s ease;
+  }
+  .fade-up.visible {
+    opacity: 1;
+    transform: none;
+  }
+
+  /* ── SEARCH BAR ──────────────────────────────────────── */
+  .search-bar {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    border: 1px solid var(--rule);
+    border-radius: 3px;
+    padding: 5px 12px;
+    background: var(--warm);
+  }
+  .search-bar input {
+    border: none;
+    background: transparent;
+    outline: none;
+    font-size: 12px;
+    color: var(--ink);
+    width: 120px;
+    font-family: var(--sans);
+  }
+  .search-bar svg { color: var(--mid); flex-shrink: 0; }
+
+  /* ── HAMBURGER BUTTON ────────────────────────────────── */
+  .hamburger {
+    display: none;
+    flex-direction: column;
+    gap: 5px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 4px;
+    margin-left: auto;
+  }
+  .hamburger span {
+    display: block;
+    width: 22px;
+    height: 1.5px;
+    background: var(--ink);
+    transition: all .3s ease;
+    transform-origin: center;
+  }
+  .hamburger.open span:nth-child(1) { transform: translateY(6.5px) rotate(45deg); }
+  .hamburger.open span:nth-child(2) { opacity: 0; transform: scaleX(0); }
+  .hamburger.open span:nth-child(3) { transform: translateY(-6.5px) rotate(-45deg); }
+
+  /* Mobile drawer */
+  .mobile-menu {
+    display: none;
+    flex-direction: column;
+    background: var(--paper);
+    border-top: 1px solid var(--rule);
+    padding: 0;
+    overflow: hidden;
+    max-height: 0;
+    transition: max-height .35s ease, padding .35s ease;
+  }
+  .mobile-menu.open {
+    max-height: 600px;
+    padding: 8px 0 20px;
+  }
+  .mobile-menu a {
+    display: block;
+    padding: 13px 24px;
+    font-size: 15px;
+    color: var(--ink);
+    text-decoration: none;
+    border-bottom: 1px solid var(--rule);
+    letter-spacing: .01em;
+  }
+  .mobile-menu a:last-child { border-bottom: none; }
+  .mobile-menu a:active { background: var(--warm); }
+  .mobile-menu .mobile-subscribe {
+    margin: 14px 24px 0;
+    display: block;
+    text-align: center;
+    background: var(--accent);
+    color: #fff !important;
+    border-radius: 4px;
+    padding: 13px 20px !important;
+    border-bottom: none !important;
+    font-weight: 500;
+    letter-spacing: .04em;
+    font-size: 14px !important;
+  }
+  .mobile-search {
+    display: none;
+    padding: 10px 24px;
+    border-bottom: 1px solid var(--rule);
+  }
+  .mobile-search-inner {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: var(--warm);
+    border: 1px solid var(--rule);
+    border-radius: 4px;
+    padding: 10px 14px;
+  }
+  .mobile-search input {
+    flex: 1;
+    border: none;
+    background: transparent;
+    outline: none;
+    font-family: var(--sans);
+    font-size: 15px;
+    color: var(--ink);
+  }
+  .mobile-search input::placeholder { color: var(--mid); }
+
+  /* ── TABLET: 768px–1024px ────────────────────────────── */
+  @media (max-width: 1024px) {
+    .two-col {
+      grid-template-columns: 1fr;
+      gap: 0;
+      padding: 0 24px 60px;
+    }
+    /* Sidebar moves below article list */
+    .two-col aside {
+      border-top: 2px solid var(--ink);
+      padding-top: 40px;
+      margin-top: 40px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 40px;
+      align-items: start;
+    }
+    .sidebar-widget { margin-bottom: 0; }
+
+    .hero-inner {
+      grid-template-columns: 1fr;
+      min-height: auto;
+    }
+    .hero-text {
+      padding: 48px 0 40px;
+      border-right: none;
+      border-bottom: 1px solid var(--rule);
+    }
+    .hero-image {
+      min-height: 260px;
+    }
+    .from-prem-inner {
+      grid-template-columns: 1fr;
+      gap: 40px;
+      padding: 56px 24px;
+    }
+    .footer-inner {
+      grid-template-columns: 1fr 1fr;
+      gap: 36px;
+    }
+  }
+
+  /* ── MOBILE: max 767px ───────────────────────────────── */
+  @media (max-width: 767px) {
+    /* Body / base */
+    body { font-size: 15px; }
+
+    /* Announcement bar */
+    .announce {
+      font-size: 11.5px;
+      padding: 8px 16px;
+      line-height: 1.5;
+    }
+
+    /* ── NAV ── */
+    .nav-inner {
+      display: flex;
+      align-items: center;
+      padding: 0 18px;
+      height: 56px;
+    }
+    .nav-left,
+    .nav-right,
+    .search-bar { display: none; }
+
+    .nav-logo {
+      flex: 1;
+      text-align: left;
+    }
+    .nav-logo .wordmark { font-size: 19px; }
+    .nav-logo .tagline { display: none; }
+
+    .hamburger { display: flex; }
+    .mobile-menu { display: flex; }
+    .mobile-search { display: block; }
+
+    /* ── HERO ── */
+    .hero-inner {
+      grid-template-columns: 1fr;
+      min-height: auto;
+      padding: 0 18px;
+    }
+    .hero-text {
+      padding: 36px 0 32px;
+      border-right: none;
+      border-bottom: 1px solid var(--rule);
+    }
+    .hero-title { font-size: 32px; line-height: 1.18; }
+    .hero-excerpt {
+      font-size: 14px;
+      margin-bottom: 24px;
+    }
+    .hero-meta { font-size: 11px; flex-wrap: wrap; gap: 6px; }
+    .hero-read { margin-top: 20px; font-size: 12px; }
+    .hero-image { min-height: 220px; }
+    .hero-quote { font-size: 20px; padding: 32px 24px; }
+
+    /* ── TOPICS STRIP ── */
+    .topics-inner {
+      padding: 20px 18px;
+      gap: 8px;
+    }
+    .topics-label { display: none; }
+    .topic-chip {
+      font-size: 12px;
+      padding: 5px 13px;
+    }
+
+    /* ── SECTION LABEL ── */
+    .section-label { padding: 36px 18px 16px; }
+
+    /* ── ARTICLE ROWS ── */
+    .feed {
+      padding: 0 18px 48px;
+    }
+    .article-row {
+      grid-template-columns: 1fr;
+      gap: 0;
+      padding: 22px 0;
+    }
+    .art-num { display: none; }
+    .art-meta {
+      text-align: left;
+      padding-top: 10px;
+      font-size: 11px;
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      color: var(--mid);
+    }
+    .art-meta .art-author { color: var(--ink); }
+    .art-meta div { white-space: nowrap; }
+    .art-meta div:not(:last-child)::after {
+      content: ' ·';
+      margin-left: 8px;
+      opacity: 0.4;
+    }
+    .art-title { font-size: 20px; }
+    .art-excerpt { font-size: 13.5px; }
+
+    /* ── TWO COL (sidebar) ── */
+    .two-col {
+      grid-template-columns: 1fr;
+      padding: 0 18px 48px;
+      gap: 0;
+    }
+    .two-col aside {
+      grid-template-columns: 1fr;
+      margin-top: 36px;
+      padding-top: 36px;
+    }
+
+    /* ── PREM RAWAT SECTION ── */
+    .from-prem-inner {
+      grid-template-columns: 1fr;
+      gap: 36px;
+      padding: 48px 18px;
+    }
+    .prem-portrait {
+      width: 100px;
+      height: 100px;
+      font-size: 36px;
+    }
+    .prem-name { font-size: 28px; }
+    .prem-article-item {
+      flex-direction: column;
+      gap: 6px;
+      padding: 16px 0;
+    }
+    .prem-art-title { font-size: 17px; }
+
+    /* ── NEWSLETTER ── */
+    .newsletter-inner { padding: 48px 18px; }
+    .nl-title { font-size: 28px; }
+    .nl-form {
+      flex-direction: column;
+      border: none;
+      background: transparent;
+      gap: 10px;
+      max-width: 100%;
+    }
+    .nl-form input {
+      border: 1px solid #b0c8b8;
+      border-radius: 4px;
+      padding: 14px 16px;
+      background: #fff;
+      width: 100%;
+      font-size: 15px;
+    }
+    .nl-form button {
+      border-radius: 4px;
+      padding: 14px 20px;
+      font-size: 14px;
+      width: 100%;
+    }
+
+    /* ── FOOTER ── */
+    footer { padding: 44px 18px 28px; }
+    .footer-inner {
+      grid-template-columns: 1fr;
+      gap: 32px;
+      margin-bottom: 32px;
+    }
+    .footer-bottom {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 8px;
+      font-size: 11px;
+    }
+  }
+
+  /* ── VERY SMALL: max 380px ───────────────────────────── */
+  @media (max-width: 380px) {
+    .hero-title { font-size: 27px; }
+    .nl-title { font-size: 24px; }
+    .topic-chip { font-size: 11.5px; padding: 5px 11px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- Announcement bar -->
+<div class="announce">
+  New series: <em>What Is Peace?</em> — 8 perspectives, one question. &nbsp;<a href="#">Read now →</a>
+</div>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-inner">
+    <!-- Left links -->
+    <div class="nav-left">
+      <a href="#">From Prem Rawat</a>
+      <a href="#">Student Perspectives</a>
+      <div class="nav-dropdown">
+        <a href="#">Topics</a>
+        <div class="dropdown-menu">
+          <a href="#">Anxiety</a>
+          <a href="#">Mental Health</a>
+          <a href="#">Self-Knowledge</a>
+          <a href="#">Gratitude</a>
+          <a href="#">Inner Peace</a>
+          <a href="#">Contentment</a>
+          <a href="#">Purpose</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Logo / wordmark -->
+    <div class="nav-logo">
+      <a href="#" class="wordmark">Inner Light Journal</a>
+      <div class="tagline">Reflections on peace & self-knowledge</div>
+    </div>
+
+    <!-- Right links -->
+    <div class="nav-right">
+      <a href="#">About</a>
+      <div class="search-bar">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+        <input type="text" placeholder="Search…">
+      </div>
+      <a href="#newsletter" class="btn-subscribe">Subscribe</a>
+    </div>
+
+    <!-- Hamburger (mobile only) -->
+    <button class="hamburger" id="hamburger" aria-label="Open menu">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+
+  <!-- Mobile drawer -->
+  <div class="mobile-menu" id="mobileMenu">
+    <div class="mobile-search">
+      <div class="mobile-search-inner">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+        <input type="text" placeholder="Search articles…">
+      </div>
+    </div>
+    <a href="#">From Prem Rawat</a>
+    <a href="#">Student Perspectives</a>
+    <a href="#">Topics</a>
+    <a href="#">Anxiety</a>
+    <a href="#">Mental Health</a>
+    <a href="#">Self-Knowledge</a>
+    <a href="#">Gratitude</a>
+    <a href="#">Inner Peace</a>
+    <a href="#">About</a>
+    <a href="#newsletter" class="mobile-subscribe">Subscribe to Newsletter</a>
+  </div>
+</nav>
+
+<!-- HERO / FEATURED ARTICLE -->
+<section class="hero">
+  <div class="hero-inner">
+    <div class="hero-text fade-up">
+      <div class="hero-eyebrow">Featured</div>
+      <h1 class="hero-title">The Quiet That Has Always Been There</h1>
+      <p class="hero-excerpt">We spend so much of our lives searching — for purpose, for calm, for something solid to hold onto. But what if the peace we're looking for isn't a destination, but a presence already within us?</p>
+      <div class="hero-meta">
+        <span class="author">Prem Rawat</span>
+        <span class="dot">·</span>
+        <span>8 min read</span>
+        <span class="dot">·</span>
+        <span>Inner Peace</span>
+      </div>
+      <a href="#" class="hero-read">Read the full piece</a>
+    </div>
+    <div class="hero-image">
+      <div class="hero-image-inner">
+        <div class="hero-quote">
+          Peace is not something<br>you find. It is something<br>you remember.
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TOPICS STRIP -->
+<div class="topics-strip">
+  <div class="topics-inner">
+    <span class="topics-label">Browse by topic</span>
+    <a href="#" class="topic-chip">Anxiety</a>
+    <a href="#" class="topic-chip">Mental Health</a>
+    <a href="#" class="topic-chip">Self-Knowledge</a>
+    <a href="#" class="topic-chip">Gratitude</a>
+    <a href="#" class="topic-chip">Inner Peace</a>
+    <a href="#" class="topic-chip">Contentment</a>
+    <a href="#" class="topic-chip">Purpose</a>
+    <a href="#" class="topic-chip">Mindfulness</a>
+    <a href="#" class="topic-chip">Breath</a>
+  </div>
+</div>
+
+<!-- FEED + SIDEBAR -->
+<div class="section-label"><span>Latest articles</span></div>
+
+<div class="two-col">
+  <!-- Article list -->
+  <div>
+    <a href="#" class="article-row fade-up">
+      <div class="art-num">01</div>
+      <div class="art-body">
+        <div class="art-tag">Student Perspectives</div>
+        <div class="art-title">I Didn't Expect to Find Stillness in a Crowded City</div>
+        <div class="art-excerpt">Living in Mumbai, quiet felt impossible. Then I learned it was never about the noise outside — it was about something I was carrying inside.</div>
+      </div>
+      <div class="art-meta">
+        <div class="art-author">Priya Nair</div>
+        <div>6 min read</div>
+        <div>May 2026</div>
+      </div>
+    </a>
+
+    <a href="#" class="article-row fade-up">
+      <div class="art-num">02</div>
+      <div class="art-body">
+        <div class="art-tag">Anxiety</div>
+        <div class="art-title">When Worry Becomes a Habit: Understanding the Loop</div>
+        <div class="art-excerpt">Anxiety isn't always loud. Sometimes it's the quiet hum beneath every thought — and learning to notice it is the first step to something different.</div>
+      </div>
+      <div class="art-meta">
+        <div class="art-author">Editorial</div>
+        <div>9 min read</div>
+        <div>May 2026</div>
+      </div>
+    </a>
+
+    <a href="#" class="article-row fade-up">
+      <div class="art-num">03</div>
+      <div class="art-body">
+        <div class="art-tag">From Prem Rawat</div>
+        <div class="art-title">Gratitude Is Not a Practice. It's a Recognition.</div>
+        <div class="art-excerpt">Most teachings on gratitude tell you to list things you're thankful for. This is different — it's about recognising what's already present, already complete.</div>
+      </div>
+      <div class="art-meta">
+        <div class="art-author">Prem Rawat</div>
+        <div>5 min read</div>
+        <div>Apr 2026</div>
+      </div>
+    </a>
+
+    <a href="#" class="article-row fade-up">
+      <div class="art-num">04</div>
+      <div class="art-body">
+        <div class="art-tag">Mental Health</div>
+        <div class="art-title">The Difference Between Solitude and Loneliness</div>
+        <div class="art-excerpt">We often confuse being alone with loneliness. But they come from completely different places — and learning to tell them apart changes everything.</div>
+      </div>
+      <div class="art-meta">
+        <div class="art-author">Rohan Das</div>
+        <div>7 min read</div>
+        <div>Apr 2026</div>
+      </div>
+    </a>
+
+    <a href="#" class="article-row fade-up">
+      <div class="art-num">05</div>
+      <div class="art-body">
+        <div class="art-tag">Self-Knowledge</div>
+        <div class="art-title">You Are Not Your Thoughts. So Then, Who Are You?</div>
+        <div class="art-excerpt">Philosophy has circled this question for centuries. Prem Rawat's answer is not philosophical — it's experiential, immediate, and surprisingly simple.</div>
+      </div>
+      <div class="art-meta">
+        <div class="art-author">Editorial</div>
+        <div>11 min read</div>
+        <div>Mar 2026</div>
+      </div>
+    </a>
+
+    <a href="#" class="article-row fade-up">
+      <div class="art-num">06</div>
+      <div class="art-body">
+        <div class="art-tag">Student Perspectives</div>
+        <div class="art-title">How Listening to Prem Rawat Changed the Way I Handle Grief</div>
+        <div class="art-excerpt">After losing my mother, I searched everywhere for comfort. What I found wasn't comfort — it was something more enduring than that.</div>
+      </div>
+      <div class="art-meta">
+        <div class="art-author">Ananya Menon</div>
+        <div>8 min read</div>
+        <div>Mar 2026</div>
+      </div>
+    </a>
+  </div>
+
+  <!-- Sidebar -->
+  <aside>
+    <div class="sidebar-widget fade-up">
+      <div class="widget-title">Quote of the week</div>
+      <div class="widget-quote">"Within you is a joy that is independent of any circumstance."</div>
+      <div class="widget-attr">— Prem Rawat</div>
+    </div>
+
+    <div class="sidebar-widget fade-up">
+      <div class="widget-title">Most read</div>
+      <div class="widget-list">
+        <a href="#">
+          <div class="wl-num">1</div>
+          <div class="wl-title">What Does It Mean to Know Yourself?</div>
+        </a>
+        <a href="#">
+          <div class="wl-num">2</div>
+          <div class="wl-title">The Breath as a Gateway to the Present</div>
+        </a>
+        <a href="#">
+          <div class="wl-num">3</div>
+          <div class="wl-title">Is Contentment the Same as Settling?</div>
+        </a>
+        <a href="#">
+          <div class="wl-num">4</div>
+          <div class="wl-title">Three Students on the Moment Everything Shifted</div>
+        </a>
+      </div>
+    </div>
+
+    <div class="sidebar-widget fade-up">
+      <div class="widget-title">Collections</div>
+      <div class="widget-list">
+        <a href="#"><div class="wl-num">→</div><div class="wl-title">Foundations — Start here if you're new</div></a>
+        <a href="#"><div class="wl-num">→</div><div class="wl-title">On Anxiety — 12-article deep dive</div></a>
+        <a href="#"><div class="wl-num">→</div><div class="wl-title">Student Stories — Real voices, real shifts</div></a>
+      </div>
+    </div>
+  </aside>
+</div>
+
+<!-- FROM PREM RAWAT SECTION -->
+<section class="from-prem">
+  <div class="from-prem-inner">
+    <div>
+      <div class="prem-label">About the voice behind the journal</div>
+      <div class="prem-portrait">✦</div>
+      <div class="prem-name">Prem<br>Rawat</div>
+      <div class="prem-bio">For over five decades, Prem Rawat has spoken to millions of people across 250 countries about the possibility of peace — not as an idea, but as a lived experience. Inner Light Journal brings his teachings and the voices of his students into one space.</div>
+    </div>
+    <div>
+      <div class="prem-label" style="margin-bottom:0">Selected writings</div>
+      <div class="prem-articles">
+        <div class="prem-article-item">
+          <div class="prem-art-title">On the Nature of Joy: Why We Keep Looking in the Wrong Places</div>
+          <div class="prem-art-tag">Joy</div>
+        </div>
+        <div class="prem-article-item">
+          <div class="prem-art-title">The Heart Knows What the Mind Keeps Forgetting</div>
+          <div class="prem-art-tag">Self-Knowledge</div>
+        </div>
+        <div class="prem-article-item">
+          <div class="prem-art-title">Peace Is Possible — Not as a Promise, But as a Reality</div>
+          <div class="prem-art-tag">Peace</div>
+        </div>
+        <div class="prem-article-item">
+          <div class="prem-art-title">This Moment: The Only Place Where Life Actually Happens</div>
+          <div class="prem-art-tag">Presence</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- NEWSLETTER -->
+<section class="newsletter" id="newsletter">
+  <div class="newsletter-inner">
+    <div class="nl-eyebrow">Weekly newsletter</div>
+    <h2 class="nl-title">Receive one article.<br>Read it slowly.</h2>
+    <p class="nl-sub">Every week, one piece — from Prem Rawat or a student of his teaching — delivered to your inbox. No noise. Just clarity.</p>
+    <div class="nl-form">
+      <input type="email" placeholder="Your email address">
+      <button type="button">Subscribe</button>
+    </div>
+    <div class="nl-note">We respect your inbox. Unsubscribe any time.</div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <span class="wordmark">Inner Light Journal</span>
+      <p>A space for reflection, self-knowledge, and the teachings of Prem Rawat.</p>
+    </div>
+    <div class="footer-col">
+      <h4>Explore</h4>
+      <a href="#">From Prem Rawat</a>
+      <a href="#">Student Perspectives</a>
+      <a href="#">All Topics</a>
+      <a href="#">Collections</a>
+      <a href="#">Most Read</a>
+    </div>
+    <div class="footer-col">
+      <h4>Topics</h4>
+      <a href="#">Anxiety</a>
+      <a href="#">Mental Health</a>
+      <a href="#">Self-Knowledge</a>
+      <a href="#">Gratitude</a>
+      <a href="#">Inner Peace</a>
+      <a href="#">Purpose</a>
+    </div>
+    <div class="footer-col">
+      <h4>Journal</h4>
+      <a href="#">About</a>
+      <a href="#">Newsletter</a>
+      <a href="#">Contact</a>
+      <a href="#">Write for Us</a>
+      <a href="#">Privacy Policy</a>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2026 Inner Light Journal</span>
+    <span><a href="#">Privacy</a> &nbsp;·&nbsp; <a href="#">Terms</a> &nbsp;·&nbsp; <a href="#">Contact</a></span>
+  </div>
+</footer>
+
+<script>
+  // ── Hamburger toggle ──────────────────────────────────
+  const hamburger = document.getElementById('hamburger');
+  const mobileMenu = document.getElementById('mobileMenu');
+
+  hamburger.addEventListener('click', () => {
+    const isOpen = mobileMenu.classList.toggle('open');
+    hamburger.classList.toggle('open', isOpen);
+    hamburger.setAttribute('aria-expanded', isOpen);
+  });
+
+  // Close mobile menu when a link inside it is tapped
+  mobileMenu.querySelectorAll('a').forEach(link => {
+    link.addEventListener('click', () => {
+      mobileMenu.classList.remove('open');
+      hamburger.classList.remove('open');
+    });
+  });
+
+  // ── Fade-in on scroll ─────────────────────────────────
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.classList.add('visible');
+        observer.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.08 });
+
+  document.querySelectorAll('.fade-up').forEach((el, i) => {
+    el.style.transitionDelay = (i * 0.05) + 's';
+    observer.observe(el);
+  });
+
+  // ── Smooth newsletter scroll ──────────────────────────
+  document.querySelectorAll('a[href="#newsletter"]').forEach(a => {
+    a.addEventListener('click', e => {
+      e.preventDefault();
+      document.getElementById('newsletter').scrollIntoView({ behavior: 'smooth' });
+    });
+  });
+</script>
+</body>
+</html>
